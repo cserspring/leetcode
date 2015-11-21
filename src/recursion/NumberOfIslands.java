@@ -8,18 +8,11 @@ public class NumberOfIslands {
 		int n = 0; 
 		if (m > 0)
 			n = grid[0].length;
-
-        boolean[][] visited = new boolean[m][n];
-        for (int i = 0; i < m; ++i) {
-        	for (int j = 0; j < n; ++j) {
-        		visited[i][j] = false;
-        	}
-        }
         
         for (int i = 0; i < m; ++i) {
         	for (int j = 0; j < n; ++j) {
-        		if (!visited[i][j] && grid[i][j] == '1') {
-        			visit(grid, i, j, m, n, visited);
+        		if (grid[i][j] == '1') {
+        			visit(grid, i, j, m, n);
         			++count;
         		}
         	}
@@ -28,22 +21,16 @@ public class NumberOfIslands {
         return count;
     }
     
-	public void visit(char[][] grid, int i, int j, int m, int n, boolean[][] visited) {
-		visited[i][j] = true;
-		if (i - 1 >= 0 && grid[i - 1][j] == '1' && !visited[i - 1][j]) {
-			visit(grid, i - 1, j, m, n, visited);
-		} 
-		
-		if (j - 1 >= 0 && grid[i][j - 1] == '1' && !visited[i][j - 1]) {
-			visit(grid, i, j - 1, m, n, visited);
-		}
-
-		if (j + 1 < n && grid[i][j + 1] == '1' && !visited[i][j + 1]) {
-			visit(grid, i, j + 1, m, n, visited);
-		} 
-
-		if (i + 1 < m && grid[i + 1][j] == '1' && !visited[i + 1][j]) {
-			visit(grid, i + 1, j, m, n, visited);
+	// DFS !!!
+	public void visit(char[][] grid, int i, int j, int m, int n) {
+		if (i < 0 || i >= m || j < 0 || j >= n)
+			return;
+		if (grid[i][j] == '1') {
+			grid[i][j] = '2';
+			visit(grid, i - 1, j, m, n);
+			visit(grid, i + 1, j, m, n);
+			visit(grid, i, j - 1, m, n);
+			visit(grid, i, j + 1, m, n);
 		}
 	}
 	
