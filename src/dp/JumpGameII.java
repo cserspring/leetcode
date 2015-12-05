@@ -2,30 +2,27 @@ package dp;
 
 public class JumpGameII {
 
-    public int jump(int[] nums) {    	
-    	int len = nums.length;
-        int[] dp = new int[len];
-        for (int i = 0; i < len; ++i)
-        	dp[i] = Integer.MAX_VALUE;
-        dp[0] = 0;
-        // In order to save time, we don't visit the elements which already been visited.
-        int start = 1;
-        for (int i = 0; i < len - 1; ++i) {
-        	start = go(i, nums[i], start, dp);
-        }
-        
-        return dp[len-1];
-    }
-    
-    // Get next start position.
-    private int go(int current, int step, int start, int[] dp) {
-    	int i = start;
-    	for (; i <= current + step && i < dp.length; ++i) {
-    		if (dp[i] > dp[current] + 1)
-    			dp[i] = dp[current] + 1;
+    public int jump(int[] nums) {
+    	int len; 
+    	if ((len = nums.length) == 1) return 0;
+    	int count = 0;
+    	int start = 0;
+    	int end = 0;
+    	while (end < len) {
+    		int mostRight = 0;
+    		++count;
+    		for (int j = start; j <= end; ++j) {
+    			if (j + nums[j] >= len - 1)
+    				return count;
+    			if (j + nums[j] > mostRight)
+    				mostRight = j + nums[j];
+    		}
+    		
+    		start  = end + 1;
+    		end = mostRight;
     	}
     	
-    	return i;
+    	return count;
     }
     
 	public static void main(String[] args) {
