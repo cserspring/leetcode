@@ -9,22 +9,16 @@ public class LongestSubstringWithoutRepeatingCharacters {
         if (s == null || (len = s.length()) == 0) return 0;
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
         int max = 0;
+        int lastIndex = -1;
         for (int i = 0; i < len; ++i) {
-        	map.put(s.charAt(i), i);
-        	for (int j = i + 1; j < len; ++j) {
-	        	if (!map.containsKey(s.charAt(j))) {
-	        		map.put(s.charAt(j), j);
-	        	} else {
-	        		i = map.get(s.charAt(j));
-	        		break;
-	        	}
+        	char c = s.charAt(i);
+        	if (map.containsKey(c) && lastIndex < map.get(c)) {
+        		lastIndex = map.get(c);
         	}
         	
-        	int count = map.size();
-    		if (count > max) {
-    			max = count;
-    		}
-    		map.clear();
+        	if (i - lastIndex > max)
+        		max = i - lastIndex;
+        	map.put(c, i);
         }
         
         return max;
