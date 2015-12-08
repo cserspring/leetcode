@@ -6,45 +6,27 @@ public class LongestPalindromicSubstring {
         int len = s.length();
         String max = "";
         for (int i = 0; i < len; ++i) {
-        	String res = getOddStr(s, i, len);
+        	String res = getStr(s, len, i, i);
         	if (res.length() > max.length())
         		max = res;
-        	res = getEvenStr(s, i, len);
-        	if (res.length() > max.length())
-        		max = res;
+        	if (i + 1 < len && s.charAt(i) == s.charAt(i + 1)) {
+        		res = getStr(s, len, i, i + 1);
+        		if (res.length() > max.length())
+        			max = res;
+        	}
         }
         
         return max;
     }
     
-    private String getOddStr(String s, int i, int len) {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(s.charAt(i));
-    	int step = 1;
-    	while (i + step < len && i - step >= 0 && s.charAt(i + step) == s.charAt(i - step)) {
-    		sb.append(s.charAt(i + step));
-    		sb.insert(0, s.charAt(i + step));
-    		step++;
+    private String getStr(String s, int len, int left, int right) {
+    	while (right < len && left >= 0 && s.charAt(left) == s.charAt(right)) {
+    		--left;
+    		++right;
     	}
-    	return sb.toString();
+    	return s.substring(left + 1, right);
     }
-    
-    private String getEvenStr(String s, int i, int len) {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(s.charAt(i));
-    	if (i + 1 < len && s.charAt(i + 1) == s.charAt(i)) {
-    		sb.append(s.charAt(i));
-    		int step = 1;
-    		while (i - step >= 0 && i + 1 + step < len && s.charAt(i - step) == s.charAt(i + 1 + step)) {
-    			sb.append(s.charAt(i + 1 + step));
-    			sb.insert(0, s.charAt(i - step));
-    			step++;
-    		}
-    	}
-    	
-    	return sb.toString();
-    }
-    
+        
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		LongestPalindromicSubstring l = new LongestPalindromicSubstring();
