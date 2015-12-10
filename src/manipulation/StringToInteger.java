@@ -16,31 +16,29 @@ public class StringToInteger {
         	sign = -1;
         }
         
-        while (pos < len && Character.isDigit(str.charAt(pos))){
+        while (pos < len && Character.isDigit(str.charAt(pos))) {
         	int value = str.charAt(pos) - '0';
-        	int preRes = res;
-        	res = Math.abs(res) * 10 * sign;
-        	if (res/(10 * sign) != Math.abs(preRes)) {
-        		return sign > 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        	}
+        	if (sign == 1 && res > (Integer.MAX_VALUE - value) / 10) 
+        			return Integer.MAX_VALUE;        	
         	
-        	preRes = res;
-        	res = res + sign * value;
-        	if (sign == 1 && res < preRes)
-        		return Integer.MAX_VALUE;
-        	if (sign == -1 && res > preRes)
-        		return Integer.MIN_VALUE;
+        	if (sign == -1 && (-res < (Integer.MIN_VALUE + value) / 10)) 
+        			return Integer.MIN_VALUE;        	
+        
+        	res = res * 10 + value;
         	++pos;
         }
         
-        return res;
+        return sign > 0 ? res : -res;
     }
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String str = "-123";
+		String str = "-2147483648";
 		StringToInteger sti = new StringToInteger();
 		System.out.println(sti.myAtoi(str));
+		// -(INT_MIN_VALUE) is still INT_MIN_VALUE 
+		int x = -2147483648;
+		System.out.println(-x);
 	}
 
 }
