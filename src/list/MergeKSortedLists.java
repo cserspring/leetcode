@@ -5,12 +5,19 @@ public class MergeKSortedLists {
     public ListNode mergeKLists(ListNode[] lists) {
     	int len;
         if (lists == null || (len = lists.length) == 0) return null;
-        ListNode q = lists[0];
-        for (int i = 1; i < len; ++i) {
-        	q= mergeTwoLists(q, lists[i]);
-        }
         
-        return q;
+        int cur = 0;
+        int end = len - 1;
+        while (end > 0) {
+        	cur = 0;
+        	while (cur < end) {
+        		lists[cur] = mergeTwoLists(lists[cur], lists[end]);
+        		++cur;
+        		--end;
+        	}
+        }
+        	        
+        return lists[0];
     }
     
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {        
