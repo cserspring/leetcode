@@ -2,9 +2,7 @@ package list;
 
 public class MergeTwoSortedLists {
 
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        if (l1 == null || l2 == null) return l1 == null ? l2 : l1;
-        
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {        
         ListNode p = new ListNode(0);
         p.next = null;
         ListNode head = p;
