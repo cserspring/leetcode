@@ -21,28 +21,14 @@ public class PermutationsII {
         for (List<Integer> subRes : res) {
         	int count = subRes.size();
         	for (int i = 0; i <= count; ++i) {
-        		if (i < count && nums[pos] == subRes.get(i))
-        			continue;
+        		if (i > 0 && nums[pos] == subRes.get(i - 1))
+        			break;
         		List<Integer> newSubRes = new ArrayList<Integer>(subRes);
         		newSubRes.add(i, nums[pos]);
-        		if (!contains(newRes, newSubRes))
-        			newRes.add(newSubRes);
+        		newRes.add(newSubRes);
         	}
     	}
         return permute(newRes, nums, pos + 1);
-    }
-    
-    private boolean contains(List<List<Integer>> res, List<Integer> subRes) {
-    	for (List<Integer> l : res) {
-    		int i = 0;
-    		for (; i < subRes.size(); ++i) {
-    			if (l.get(i) != subRes.get(i))
-    				break;
-    		}
-    		if (i == subRes.size())
-    			return true;
-    	}
-    	return false;
     }
     
 	public static void main(String[] args) {
