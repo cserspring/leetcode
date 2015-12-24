@@ -3,28 +3,30 @@ package area;
 public class TrappingRainWater {
 
     public int trap(int[] height) {
-        int n = height.length;
+        int n;
+        if (height == null || (n = height.length) == 0) return 0;
         int area = 0;
-        int[] left = new int[n];
-        int[] right = new int[n];
-        int leftMaxHeight = 0;
-        int rightMaxHeight = 0;
-        for (int i = 0; i < n; ++i) {
-        	if (i > 0 && height[i - 1] > leftMaxHeight) {
-        		leftMaxHeight = height[i - 1];
+        int maxHeight = height[0];
+        int maxHeightIndex = 0;
+        for (int i = 1; i < n; ++i) {
+        	if (height[i] > maxHeight) {
+        		maxHeight = height[i];
+        		maxHeightIndex = i;
         	}
-        	left[i] = leftMaxHeight;
-        	
-        	if (i < n - 1 && height[n - 1 - i] > rightMaxHeight) {
-        		rightMaxHeight = height[n - 1 - i];
-        	}
-        	if (n - 2 >= i)
-        		right[n - 2 - i] = rightMaxHeight;
         }
         
-        for (int i = 1; i < n - 1; ++i) {
-        	int min = Math.min(left[i], right[i]);
-        	area += min > height[i] ? (min - height[i]) : 0;
+        int leftMax = height[0];
+        for (int i = 1; i < maxHeightIndex; ++i) {
+        	if (height[i] > leftMax)
+        		leftMax = height[i];
+        	area += (leftMax - height[i]);
+        }
+        
+        int rightMax = height[n - 1];
+        for (int i = n - 2; i > maxHeightIndex; --i) {
+        	if (height[i] > rightMax) 
+        		rightMax = height[i];
+        	area += rightMax - height[i];
         }
         
         return area;
@@ -32,7 +34,7 @@ public class TrappingRainWater {
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int[] height = { 0,1,0,2,1,0,1,3,2,1,2,1 /*5,2,1,2,1,5*/ };
+		int[] height = { /*0,1,0,2,1,0,1,3,2,1,2,1*/ 5,2,1,2,1,5 };
 		TrappingRainWater t = new TrappingRainWater();
 		System.out.println(t.trap(height));
 	}
