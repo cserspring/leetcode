@@ -6,66 +6,39 @@ import java.util.List;
 public class NQueens {
 
     public List<List<String>> solveNQueens(int n) {
-    	char[][] board = new char[n][n];
-    	for (int i = 0; i < n; ++i) {
-    		for (int j = 0; j < n; ++j) {
-    			board[i][j] = '.';
-    		}
-    	}
     	List<List<String>> res = new ArrayList<List<String>>();
-    	solve(res, 0, board, n);
+    	int[] positions = new int[n];
+    	solve(positions, res, 0, n);
     	return res;
     }
     
-    private void solve(List<List<String>> res, int row, char[][] board, int n) {
-    	if (row >= n) {
+    private void solve(int[] positions, List<List<String>> res, int row, int n) {
+    	if (row == n) {
     		List<String> record = new ArrayList<String>();
-    		for (int i = 0; i < n; ++i) {
+    		for (int i = 0; i < n; ++i) {    			
     			StringBuilder sb = new StringBuilder();
-    			for (int j = 0; j < n; ++j) {
-    				if (board[i][j] != 'Q')
-    					board[i][j] = '.';
-    				sb.append(board[i][j]);
-    			}
+    			for (int j = 0; j < n; ++j)
+    				sb.append('.');
+    			sb.setCharAt(positions[i], 'Q');
     			record.add(sb.toString());
-    		}    		
-    		
-    		res.add(record);
-    		return;
-    	}
-    	
-    	for (int i = 0; i < n; ++i) {
-    		if (board[row][i] == '.') {
-            	char[][] cpyBoard = copyBoard(board, n);
-    			setForbiddenArea(cpyBoard, row, i, n);
-    			solve(res, row + 1, cpyBoard, n);
+    		}
+			res.add(record);
+    	} else {
+    		for (int i = 0; i < n; ++i) {
+    			if (isValid(positions, row, i)) {
+    				positions[row] = i;
+    				solve(positions, res, row + 1, n);
+    			}
     		}
     	}
     }
     
-    private void setForbiddenArea(char[][] board, int i, int j, int n) {
-    	// Rows and columns
-    	for (int k = 0; k < n; ++k) {
-    		board[i][k] = 'F';
-    		board[k][j] = 'F';
+    private boolean isValid(int[] positions, int row, int candidate) {
+    	for (int i = 0; i < row; ++i) {
+    		if (positions[i] == candidate || Math.abs(i - row) == Math.abs(positions[i] - candidate))
+    			return false;
     	}
-    	// Diagonal
-    	for (int k = 1 - n; k <= n - 1; ++k) {
-   			if (i + k >= 0 && i + k < n && j + k >= 0 && j + k < n)
-   				board[i + k][j + k] = 'F';
-   			if (i + k >= 0 && i + k < n && j - k >= 0 && j - k < n)
-   				board[i + k][j - k] = 'F';
-    	}
-    	board[i][j] = 'Q';
-    }
-    
-    private char[][] copyBoard(char[][] board, int n) {
-    	char[][] cpyBoard = new char[n][n];
-    	for (int i = 0; i < n; ++i) {
-    		for (int j = 0; j < n; ++j)
-    			cpyBoard[i][j] = board[i][j];
-    	}
-    	return cpyBoard;
+    	return true;
     }
     
 	public static void main(String[] args) {
