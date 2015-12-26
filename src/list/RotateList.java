@@ -3,9 +3,8 @@ package list;
 public class RotateList {
 
     public ListNode rotateRight(ListNode head, int k) {
-    	if (k == 0 || head == null) return head; 
-        ListNode p = head;
-        ListNode q = head;
+    	if (k == 0 || head == null) return head;
+    	
         ListNode x = head;
         int count = 0;
         while (x != null) {
@@ -14,19 +13,19 @@ public class RotateList {
         }
         
         int n = k;
-        if (k > count) {
+        if (k >= count) {
         	if (k % count == 0)
         		return head;
         	else
         		n = k % count;
         }
         	
+        ListNode p = head;
+        ListNode q = head;
         while (p != null && n > 0) {
         	p = p.next;
         	--n;
         }
-        
-        if (p == null) return head;
         
         while (p.next != null && q.next != null) {
         	p = p.next;
