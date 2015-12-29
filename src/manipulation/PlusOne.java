@@ -4,24 +4,18 @@ public class PlusOne {
 
     public int[] plusOne(int[] digits) {
         int n = digits.length;
-        int i = 0;
-        for (; i < n; ++i)
-        	if (digits[i] != 9)
-        		break;
-        if (i == n) {
-        	int[] newDigits = new int[n + 1];
-        	newDigits[0] = 1;
-        	return newDigits;
+        int i = n - 1;
+        for (; i >= 0; --i) {
+        	if (digits[i] != 9) {
+        		++digits[i];
+        		return digits;
+        	} else {
+        		digits[i] = 0;
+        	}
         }
         
-        --n;
-        digits[n] += 1;
-        while (n >= 0 && digits[n] >= 10) {
-        	digits[n] = digits[n] % 10;
-        	digits[n - 1] += 1;
-        	--n;
-        }
-        
+        digits = new int[n + 1];
+        digits[0] = 1;
         return digits;
     }
     
