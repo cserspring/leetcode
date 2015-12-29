@@ -8,24 +8,18 @@ public class TextJustification {
     public List<String> fullJustify(String[] words, int maxWidth) {
         List<String> res = new ArrayList<String>();
         int n = words.length;
-        for (int i = 0; i < n;) {
-        	int len = words[i].length(); 
-        	if (i == n - 1) {
-        		justify(words, i, n - 1, res, maxWidth);
-        		break;
+        int i = 0;
+        int len = 0;
+        int start = 0;
+        for (; i < n; ++i) {     
+        	if (len + words[i].length() + (i == start ? 0 : 1) > maxWidth) {
+        		justify(words, start, i - 1, res, maxWidth);
+        		start = i;
+        		len = 0;
         	}
-        	for (int j = i + 1; j < n; ++j) {
-        		len += words[j].length() + 1;
-        		if (len > maxWidth) {
-        			justify(words, i, j - 1, res, maxWidth);
-        			i = j;
-        			break;
-        		} else if (j == n - 1) {
-        			justify(words, i, n - 1, res, maxWidth);
-        			i = n;
-        		}
-        	}
+        	len += words[i].length() + (i == start ? 0 : 1);
         }
+        justify(words, start, n - 1, res, maxWidth);
         return res;
     }
     
@@ -37,22 +31,24 @@ public class TextJustification {
     		total += words[i].length();
     	}
     	int rem = L - total;
+    	// Only one word in this line
     	if (count == 1) {
-    		String space = new String(new char[rem]).replace("\0", " ");
+    		String space = "";
+    		for (int i = 0; i < rem; ++i) space += " ";
     		res.add(words[start] + space);
-    	} else if (end == words.length - 1) {
+    	} else if (end == words.length - 1) { // This is the last line
     		String s = words[start];
     		for (int i = 1; i <= count - 1; ++i) {
     			s += " " + words[start + i];
     		}
-    		s += new String(new char[rem - count + 1]).replace("\0", " ");
+    		for (int i = 0; i < rem - count + 1; ++i) s+= " ";
     		res.add(s);
-    	} else {
+    	} else { // General case
     		int avg = rem / (count - 1);
     		int leftMore = rem - avg * (count  - 1);
     		String s = words[start];
     		for (int i = 1; i <= count - 1; ++i) {
-    			s += new String(new char[avg]).replace("\0", " ");
+    			for (int j = 0; j < avg; ++j) s += " ";
     			s += leftMore-- > 0 ? " " : "";
     			s += words[start + i];
     		}
