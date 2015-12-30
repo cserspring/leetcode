@@ -3,15 +3,20 @@ package manipulation;
 public class Sqrt {
 
     public int mySqrt(int x) {
-        int median = x / 2;
-        int root = x;
-        for (int i = median; i >= 1; --i) {
-        	if (x / i >= i) {
-        		root = i;
-        		break;
-        	}
+    	if (x <= 1) return x;
+    	int start = 1;
+        int end = x / 2;
+        while (start <= end) {
+        	int mid = (start + end) / 2;
+        	if (x / mid == mid)
+        		return mid;
+        	if (x / mid > mid)
+        		start = mid + 1;
+        	else
+        		end = mid - 1;
         }
-        return root;
+
+        return end;
     }
     
 	public static void main(String[] args) {
