@@ -1,57 +1,39 @@
 package ds;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class SimplifyPath {
 
     public String simplifyPath(String path) {
-    	path += "/";
-        int n = path.length();
-        int start = -1;
-        int end = -1;
-        List<String> strs = new ArrayList<String>();
-        for (int i = 0; i < n; ++i) {
-        	if (i + 1 < n && path.charAt(i) == '/' && path.charAt(i + 1) != '/') 
-        		start = i;
-        	if (i + 1 < n && path.charAt(i) != '/' && path.charAt(i + 1) == '/')
-        		end = i;
-        	if (start != -1 && end != -1) {
-        		strs.add(path.substring(start, end + 1));
-        		start = -1;
-        		end = -1;
-        	}
-        }
-        
-        Stack<String> stack = new Stack<String>();
-        for (int i = 0; i < strs.size(); ++i) {
-        	String str = strs.get(i);
-        	switch (str) {
-        		case "/..":
-        			if (!stack.isEmpty())
-        				stack.pop();
-        			break;
-        		case "/.":
-        			break;
-        		default:
-        			stack.push(str);
-        			break;
-        	}
-        }
-        
-        if (stack.isEmpty()) return "/";
-        
-        StringBuilder sb = new StringBuilder();
-        
-        while (!stack.isEmpty())
-        	sb.insert(0, stack.pop());
-        return sb.toString();
+    	String[] names = path.split("/");
+    	Stack<String> s = new Stack<String>();
+    	for (int i = 0; i < names.length; ++i) {
+    		String name = names[i];
+    		switch (name) {
+    			case "":
+    			case ".":
+    				break;
+    			case "..":
+    				if (!s.isEmpty()) s.pop();
+    				break;
+    			default:
+    				s.push(name);
+    				break;
+    		}
+    	}
+    	
+    	if (s.isEmpty()) return "/";
+    	StringBuilder res = new StringBuilder();
+    	while (!s.isEmpty()) {
+    		res.insert(0, "/" + s.pop());
+    	}
+    	
+    	return res.toString();
     }
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String path = "/...";
+		String path = "/a/b/c////d/e/";
 		SimplifyPath s = new SimplifyPath();
 		System.out.println(s.simplifyPath(path));
 	}
