@@ -13,9 +13,8 @@ public class DecodeWays {
 			if (s.charAt(i - 1) == '0') {
 				if (s.charAt(i - 2) != '1' && s.charAt(i - 2) != '2') return 0;
 				dp[i] = dp[i - 2];
-			} else if (s.charAt(i - 2) == '0' || s.charAt(i - 2) > '2') {
-				dp[i] = dp[i - 1];
-			} else if (s.charAt(i - 2) == '2' && s.charAt(i - 1) > '6') {
+			} else if (s.charAt(i - 2) == '0' || s.charAt(i - 2) > '2' || 
+					(s.charAt(i - 2) == '2' && s.charAt(i - 1) > '6')) {
 				dp[i] = dp[i - 1];
 			} else {
 				dp[i] = dp[i - 1] + dp[i - 2];
