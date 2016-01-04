@@ -2,6 +2,7 @@ package treetraversal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 class TreeNode {
 	int val;
@@ -14,18 +15,22 @@ public class BinaryTreeInorderTraversal {
 
     public List<Integer> inorderTraversal(TreeNode root) {
     	List<Integer> res = new ArrayList<Integer>();
-    	inorder(root, res);
+    	Stack<TreeNode> stack = new Stack<TreeNode>();
+    	while (root != null || !stack.isEmpty()) {
+    		while (root != null) {
+    			stack.push(root);
+    			root = root.left;
+    		}
+    		if (!stack.isEmpty()) {
+    			root = stack.pop();
+    			res.add(root.val);
+    			root = root.right;
+    		}
+    	}
+
     	return res;
     }
-    
-    private void inorder(TreeNode root, List<Integer> res) {
-    	if (root != null) {
-    		inorder(root.left, res);
-    		res.add(root.val);
-    		inorder(root.right, res);
-    	}
-    }
-    
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
