@@ -9,17 +9,17 @@ public class DecodeWays {
 		dp[0] = 1;
 		if (s.charAt(0) == '0') return 0;
 		dp[1] = 1;
+
 		for (int i = 2; i <= n; ++i) {
-			if (s.charAt(i - 1) == '0') {
-				if (s.charAt(i - 2) != '1' && s.charAt(i - 2) != '2') return 0;
-				dp[i] = dp[i - 2];
-			} else if (s.charAt(i - 2) == '0' || s.charAt(i - 2) > '2' || 
-					(s.charAt(i - 2) == '2' && s.charAt(i - 1) > '6')) {
-				dp[i] = dp[i - 1];
-			} else {
-				dp[i] = dp[i - 1] + dp[i - 2];
-			}
+			int c1 = 0;
+			if (s.charAt(i - 1) != '0')
+				c1 = dp[i - 1];
+			int c2 = 0;
+			if (s.charAt(i - 2) == '1' || (s.charAt(i - 2) == '2' && s.charAt(i - 1) < '7'))
+				c2 = dp[i - 2];
+			dp[i] = c1 + c2;
 		}
+		
 		return dp[n];
 	}
     
