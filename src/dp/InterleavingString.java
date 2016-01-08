@@ -14,17 +14,25 @@ public class InterleavingString {
         char[] c3 = s3.toCharArray();
         Arrays.sort(c3);
         if (!isEqual(c12, c3, len3)) return false;
-        return interleave(s1, s2, s3, len1, len2, len3, 0, 0, 0);
-    }
-    
-    private boolean interleave(String s1, String s2, String s3, int len1, int len2, int len3, int i, int j, int k) {
-    	if (i == len1 && j == len2 && k == len3) return true;
-    	boolean flag = false;
-    	if (i < len1 && s1.charAt(i) == s3.charAt(k))
-    		flag = flag || interleave(s1, s2, s3, len1, len2, len3, i + 1, j, k + 1);
-    	if (j < len2 && s2.charAt(j) == s3.charAt(k))
-    		flag = flag || interleave(s1, s2, s3, len1, len2, len3, i, j + 1, k + 1);
-    	return flag;
+
+        boolean[][] dp = new boolean[len1 + 1][len2 + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= len1; ++i) {
+        	dp[i][0] = (s1.charAt(i - 1) == s3.charAt(i - 1)) && dp[i - 1][0];
+        }
+        
+        for (int i = 1; i <= len2; ++i) {
+        	dp[0][i] = (s2.charAt(i - 1) == s3.charAt(i - 1)) && dp[0][i - 1];
+        }
+        
+        for (int i = 1; i <= len1; ++i) {
+        	for (int j = 1; j <= len2; ++j) {
+        		dp[i][j] = (s1.charAt(i - 1) == s3.charAt(i + j - 1) && dp[i - 1][j]) || 
+        				(s2.charAt(j - 1) == s3.charAt(i + j - 1) && dp[i][j - 1]);
+        	}
+        }
+        
+        return dp[len1][len2];
     }
     
     private boolean isEqual(char[] c0, char[] c1, int n) {
