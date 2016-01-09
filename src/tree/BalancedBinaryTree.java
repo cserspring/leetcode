@@ -2,17 +2,27 @@ package tree;
 
 public class BalancedBinaryTree {
 	
+	class Entry{
+		public int height;
+		public boolean balanced;
+	}
+	
     public boolean isBalanced(TreeNode root) {
-        if (root == null) return true;
-        int leftHeight = height(root.left);
-        int rightHeight = height(root.right);
-        return Math.abs(leftHeight - rightHeight) <= 1 &&
-        		isBalanced(root.left) && isBalanced(root.right);
+    	return checkTree(root).balanced;
     }
     
-    private int height(TreeNode root) {
-    	if (root == null) return 0;
-    	return Math.max(1 + height(root.left), 1 + height(root.right));
+    private Entry checkTree(TreeNode root) {
+    	Entry entry = new Entry();
+    	if (root == null) {
+    		entry.height = 0;
+    		entry.balanced = true;
+    	} else {
+    		Entry left = checkTree(root.left);
+    		Entry right = checkTree(root.right);
+    		entry.height = Math.max(left.height, right.height) + 1;
+    		entry.balanced = Math.abs(left.height - right.height) <= 1 && left.balanced && right.balanced;
+    	}
+    	return entry;
     }
     
 }
