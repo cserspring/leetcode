@@ -12,13 +12,8 @@ public class PascalsTriangleII {
         	res.add(1);
         } else {
         	res = getRow(rowIndex - 1);
-        	int tmp = 0;
-        	int last = 1;
-        	for (int i = 1; i < res.size(); ++i) {
-        		tmp = res.get(i);
-        		res.set(i, res.get(i) + last);
-        		last = tmp;
-        	}
+        	for (int i = res.size() - 1; i > 0; --i) 
+        		res.set(i, res.get(i) + res.get(i - 1));        	
         	res.add(1);
         } 
         
