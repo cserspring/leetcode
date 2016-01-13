@@ -7,13 +7,14 @@ public class Triangle {
 
     public int minimumTotal(List<List<Integer>> triangle) {
         int m = triangle.size();
-        return minPath(triangle, 0, 0, m, 0);
-    }
-    
-    private int minPath(List<List<Integer>> triangle, int row, int col, int m, int prevTotal) {
-    	if (row >= m) return prevTotal;
-    	prevTotal += triangle.get(row).get(col);
-    	return Math.min(minPath(triangle, row + 1, col, m, prevTotal), minPath(triangle, row + 1, col + 1, m, prevTotal));
+        int n = triangle.get(m - 1).size();
+        int[] res = new int[n + 1];
+        for (int i = m - 1; i >= 0; --i) {
+        	for (int j = 0; j < triangle.get(i).size(); ++j) {
+        		res[j] = Math.min(res[j], res[j + 1]) + triangle.get(i).get(j);
+        	}
+        }
+        return res[0];
     }
     
 	public static void main(String[] args) {
