@@ -6,9 +6,12 @@ public class BestTimeToBuyAndSellStock {
         int n;
         int max = 0;
         if (prices == null || (n = prices.length) == 0) return max;
-        for (int i = 0; i < n - 1; ++i) {
-        	for (int j = i + 1; j < n; ++j) {
-        		int profit = prices[j] - prices[i];
+        int min = prices[0];
+        for (int i = 1; i < n; ++i) {
+        	if (prices[i] < min) {
+        		min = prices[i];
+        	} else {
+        		int profit = prices[i] - min;
         		if (profit > max)
         			max = profit;
         	}
