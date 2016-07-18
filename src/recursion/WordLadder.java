@@ -6,37 +6,33 @@ import java.util.Queue;
 import java.util.Set;
 
 public class WordLadder {
-	class Node {
-		public String word;
-		public int distance;
-		public Node(String word, int distance) {
-			this.word = word;
-			this.distance = distance;
-		}
-		
-	}
+	
     public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
-    	Queue<Node> queue = new LinkedList<Node>();
-    	queue.add(new Node(beginWord, 1));
+    	Queue<String> queue = new LinkedList<String>();
+    	queue.add(beginWord);
     	wordList.add(endWord);
-    	
+    	int distance = 0;
     	while (!queue.isEmpty()) {
-    		Node node = queue.poll();
-    		if (node.word.equals(endWord)) return node.distance;
-    		addNeighbors(node, wordList, queue);
+    		++distance;
+    		int n = queue.size();
+    		for (int i = 0; i < n; ++i) {
+        		String word = queue.poll();
+        		if (word.equals(endWord)) return distance;
+        		addNeighbors(word, wordList, queue);        		
+    		}
     	}
     	
     	return 0;
     }
     
-    private void addNeighbors(Node node, Set<String> wordList, Queue<Node> queue) {
-    	int n = node.word.length();
+    private void addNeighbors(String word, Set<String> wordList, Queue<String> queue) {
+    	int n = word.length();
     	for (int i = 0; i < n; ++i) {
     		for (char j = 'a'; j <= 'z'; ++j) {
-    			if (j != node.word.charAt(i)) {
-    				String intermediate = replaceChar(node.word, i, j);
+    			if (j != word.charAt(i)) {
+    				String intermediate = replaceChar(word, i, j);
     				if (wordList.contains(intermediate)) {
-    					queue.add(new Node(intermediate, node.distance + 1));
+    					queue.add(intermediate);
     					wordList.remove(intermediate);
     				}
     			}
@@ -47,7 +43,7 @@ public class WordLadder {
     private String replaceChar(String s, int index, char c) {
     	char[] charArr = s.toCharArray();
     	charArr[index] = c;
-    	return new String(charArr);
+    	return String.valueOf(charArr);
     }
     
 	public static void main(String[] args) {
