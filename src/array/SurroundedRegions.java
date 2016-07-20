@@ -1,18 +1,36 @@
 package array;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class SurroundedRegions {
+	class Point{
+		public int x;
+		public int y;
+		public Point(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
     public void solve(char[][] board) {
         int m;
         int n;
         if (board == null || (m = board.length) == 0 || (n = board[0].length) == 0) return;
+        Queue<Point> queue = new LinkedList<Point>();
         for (int i = 0; i < m; ++i) {
-        	DFS(board, i, 0, m, n);
-        	DFS(board, i, n - 1, m, n);
+        	queue.add(new Point(i, 0));
+        	queue.add(new Point(i, n-1));
         }
         
         for (int i = 1; i < n - 1; ++i) {
-        	DFS(board, 0, i, m, n);
-        	DFS(board, m-1, i, m, n);
+        	queue.add(new Point(0, i));
+        	queue.add(new Point(m-1, i));
+        }
+        
+        while (!queue.isEmpty()) {
+        	Point p = queue.poll();
+        	check(board, p.x, p.y, m, n, queue);
         }
         
         for (int i = 0; i < m; ++i) {
@@ -25,13 +43,13 @@ public class SurroundedRegions {
         }
     }
     
-    private void DFS(char[][] board, int i, int j, int m, int n) {
+    private void check(char[][] board, int i, int j, int m, int n, Queue<Point> queue) {
     	if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != 'O') return;
     	board[i][j] = 'P';
-    	DFS(board, i-1, j, m, n);
-    	DFS(board, i+1, j, m, n);
-    	DFS(board, i, j-1, m, n);
-    	DFS(board, i, j+1, m, n);
+    	queue.add(new Point(i-1, j));
+    	queue.add(new Point(i+1, j));
+    	queue.add(new Point(i, j-1));
+    	queue.add(new Point(i, j+1));
     }
     
 	public static void main(String[] args) {
