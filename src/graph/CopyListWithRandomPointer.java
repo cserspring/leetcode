@@ -16,41 +16,32 @@ public class CopyListWithRandomPointer {
     	RandomListNode node = head;
     	
     	while (node != null) {
-    		RandomListNode nodeCpy;
-    		if (!map.containsKey(node)) {
-    			nodeCpy = new RandomListNode(node.label);
-    	    	map.put(node, nodeCpy);
-    		} else {
-    			nodeCpy = map.get(node);
-    		}
+    		RandomListNode nodeCpy = getNodeCpy(map, node);
     		
     		RandomListNode next = node.next;
-    		RandomListNode random = node.random;
-    		
-    		if (next != null) {
-    			if (map.containsKey(next)) {
-    				nodeCpy.next = map.get(next);
-    			} else {
-    				RandomListNode nextCpy = new RandomListNode(next.label);
-    				nodeCpy.next = nextCpy;
-    				map.put(next, nextCpy);
-    			}
-    		}
+    		RandomListNode random = node.random;    		
+    		if (next != null) 
+    			nodeCpy.next = getNodeCpy(map, next);    		
 			
-    		if (random != null) {
-				if (map.containsKey(random)) {
-					nodeCpy.random = map.get(random);
-				} else {
-					RandomListNode randomCpy = new RandomListNode(random.label);
-					nodeCpy.random = randomCpy;
-					map.put(random, randomCpy);
-				}
-			}		
-    		
+    		if (random != null) 
+				nodeCpy.random = getNodeCpy(map, random);
+				    		
     		node = next;
     	}
     	
     	return map.get(head);
+    }
+    
+    private RandomListNode getNodeCpy(HashMap<RandomListNode, RandomListNode> map, RandomListNode node) {
+    	RandomListNode nodeCpy;
+    	if (map.containsKey(node)) {
+    		nodeCpy = map.get(node);
+    	} else {
+    		nodeCpy = new RandomListNode(node.label);
+    		map.put(node, nodeCpy);
+    	}
+    	
+    	return nodeCpy;
     }
     
 	public static void main(String[] args) {
