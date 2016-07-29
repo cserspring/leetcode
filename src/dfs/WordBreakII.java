@@ -7,8 +7,23 @@ import java.util.Set;
 
 public class WordBreakII {
     public List<String> wordBreak(String s, Set<String> wordDict) {
-        List<String> res = new ArrayList<String>();
-        dfs(res, s, wordDict, "");
+    	List<String> res = new ArrayList<String>();
+    	int n;
+    	if (s == null || (n = s.length()) == 0) return res;
+    	
+    	boolean[] dp = new boolean[n+1];
+    	dp[0] = true;
+    	for (int i = 1; i <= n; ++i) {
+    		for (int j = 0; j < i; ++j) {
+    			if (dp[j] && wordDict.contains(s.substring(j, i))) {
+    				dp[i] = true;
+    				break;
+    			}
+    		}
+    	}
+    	
+        if (dp[n])
+        	dfs(res, s, wordDict, "");
         return res;
     }
     

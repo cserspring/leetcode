@@ -5,32 +5,21 @@ import java.util.Set;
 
 public class WordBreak {
     public boolean wordBreak(String s, Set<String> wordDict) {
-    	if (wordDict.contains(s))
-    		return true;
-    	//boolean flag = false;
-   		int n = s.length();
-   		for (int i = 1; i <= n; ++i) {
-   			String candidate = s.substring(0, i);
-   			if (wordDict.contains(candidate) && wordBreak(s.substring(i), wordDict))
-   				return true;   			
-   		}
-   		
-   		return false;
+    	int n;
+    	if (s == null || (n = s.length()) == 0) return false;
+    	boolean[] dp = new boolean[n+1];
+    	dp[0] = true;
+    	for (int i = 1; i <= n; ++i) {
+    		for (int j = 0; j < i; ++j) {
+    			if (dp[j] && wordDict.contains(s.substring(j, i))) {
+    				dp[i] = true;
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return dp[n];
     }
-    /*
-    private boolean dfs(String s, Set<String> wordDict) {
-    	if (wordDict.contains(s))
-    		return true;
-    	//boolean flag = false;
-   		int n = s.length();
-   		for (int i = 1; i <= n; ++i) {
-   			String candidate = s.substring(0, i);
-   			if (wordDict.contains(candidate) && dfs(s.substring(i), wordDict))
-   				return true;   			
-   		}
-   		
-   		return false;
-    }*/
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
