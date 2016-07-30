@@ -1,32 +1,46 @@
 package list;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ReorderList {
     public void reorderList(ListNode head) {
-        Map<Integer, ListNode> dict = new HashMap<Integer, ListNode>();
-        ListNode p = head;
-        int n = 0;
-        while (p != null) {
-        	dict.put(n, p);
-        	++n;
-        	p = p.next;
+    	if (head == null || head.next == null) return;
+        ListNode mid = getMidNode(head);
+        ListNode firstHalf = head;
+        ListNode secondHalf = reverse(mid.next);
+        mid.next = null;
+        while (firstHalf != null && secondHalf != null) {
+        	ListNode firstHalfNext = firstHalf.next;
+        	ListNode secondHalfNext = secondHalf.next;
+        	firstHalf.next = secondHalf;
+        	secondHalf.next = firstHalfNext;
+        	firstHalf = firstHalfNext;
+        	secondHalf = secondHalfNext;
         }
-        
-        if (n <= 2) return;
-        int mid = n/2;
-        int i = 0;
-        p = head;
-        while (i < mid) {
-        	ListNode next = p.next;
-        	p.next = dict.get(n - 1 - i);
-        	p.next.next = next;
-        	p = next;
-        	++i;
-        }
-        
-        dict.get(i).next = null;
+    }
+
+    private ListNode reverse(ListNode head) {
+    	if (head == null || head.next == null) return head;
+    	ListNode prev = null;
+    	ListNode cur = head;
+    	ListNode next;
+    	while (cur != null) {
+    		next = cur.next;
+    		cur.next = prev;
+    		prev = cur;
+    		cur = next;
+    	}
+    	
+    	return prev;
+    }
+    
+    private ListNode getMidNode(ListNode head) {
+    	ListNode slow = head;
+    	ListNode fast = head;
+    	while (fast != null && fast.next != null) {
+    		slow = slow.next;
+    		fast = fast.next.next;
+    	}
+    	
+    	return slow;
     }
     
 	public static void main(String[] args) {
