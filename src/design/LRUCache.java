@@ -17,84 +17,59 @@ public class LRUCache {
     	}
     }
     
-    private int count;
 	private int capacity;
     private ListNode head;
     private ListNode tail;
     private Map<Integer, ListNode> dict;
     
 	public LRUCache(int capacity) {
-		this.count = 0;
         this.capacity = capacity;
-        this.head = null;
-        this.tail = null;
+        this.head = new ListNode(-1, -1);
+        this.tail = new ListNode(-1, -1);
+        head.next = tail;
+        tail.prev = head;
         this.dict = new HashMap<Integer, ListNode>();
     }
     
     public int get(int key) {
         if (!dict.containsKey(key)) return -1;
         ListNode curNode = dict.get(key);
-        if (tail == curNode) return curNode.val;
-        if (head == curNode) {
-        	head = curNode.next;
-        	head.prev = null;
-        } else {
-            ListNode prevNode = curNode.prev;
-            ListNode nextNode = curNode.next;
-            if (prevNode != null)
-            	prevNode.next = nextNode;
-            if (nextNode != null)
-            	nextNode.prev = prevNode;        	
-        }        
-
-        tail.next = curNode;
-        curNode.prev = tail;
-        tail = curNode;
+        moveToTail(curNode, true);
         return curNode.val;
     }
     
     public void set(int key, int value) {
         if (!dict.containsKey(key)) {
-        	if (count >= capacity) {
-        		// remove the head
-        		dict.remove(head.key);
-        		--count;
-        		head = head.next;
-        		if (head != null)
-        			head.prev = null;        		
+        	ListNode newNode = new ListNode(key, value);
+        	if (dict.size() == capacity) {
+        		ListNode curNode = dict.get(head.next.key);
+        		dict.remove(curNode.key);
+        		head.next = curNode.next;
+        		curNode.next.prev = curNode.prev;
         	}
         	
-        	ListNode node = new ListNode(key, value);
-        	dict.put(key, node);
-        	++count;
-        	if (head == null) {
-        		head = node;
-        		tail = node;
-        	} else {
-        		tail.next = node;
-        		node.prev = tail;
-        		tail = node;
-        	}
+        	dict.put(key, newNode);
+        	moveToTail(newNode, false);
         } else {
         	ListNode curNode = dict.get(key);
         	curNode.val = value;
-            if (tail == curNode) return;
-            if (head == curNode) {
-            	head = curNode.next;
-            	head.prev = null;
-            } else {
-                ListNode prevNode = curNode.prev;
-                ListNode nextNode = curNode.next;
-                if (prevNode != null)
-                	prevNode.next = nextNode;
-                if (nextNode != null)
-                	nextNode.prev = prevNode;        	
-            }        
-
-            tail.next = curNode;
-            curNode.prev = tail;
-            tail = curNode;
+        	moveToTail(curNode, true);
         }
+    }
+    
+    private void moveToTail(ListNode node, boolean existed) {
+    	if (existed) {
+    		ListNode prev = node.prev;
+    		ListNode next = node.next;
+    		prev.next = next;
+    		next.prev = prev;
+    	}
+    	
+    	ListNode tailPrev = tail.prev;
+    	tailPrev.next = node;
+    	node.prev = tailPrev;
+    	node.next = tail;
+    	tail.prev = node;
     }
     
 	public static void main(String[] args) {
