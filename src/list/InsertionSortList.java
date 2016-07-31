@@ -4,15 +4,11 @@ public class InsertionSortList {
     public ListNode insertionSortList(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode fakeHead = new ListNode(-1);
-        // Below initialization should be careful.
-        fakeHead.next = head;
-        ListNode node = head.next;
-        head.next = null;
         
-        while (node != null) {
-        	ListNode next = node.next; // Make a copy of the next node.
-        	insert(fakeHead, node);
-        	node = next;
+        while (head != null) {
+        	ListNode next = head.next; // Make a copy of the next node.
+        	insert(fakeHead, head);
+        	head = next;
         }
         
         return fakeHead.next;
@@ -20,21 +16,14 @@ public class InsertionSortList {
     
     // Insert a new node into a sorted list
     private void insert(ListNode fakeHead, ListNode newNode) {
-    	ListNode prev = fakeHead;
-    	ListNode cur = fakeHead.next; // We already put head into this list, so cur will not be null
-    	while (cur != null) {
-    		if (newNode.val <= cur.val) {
-    			prev.next = newNode;
-    			newNode.next = cur;
-    			return;
-    		} else {
-    			prev = cur;
-    			cur = cur.next;
-    		}
+    	// Use node.next to write concise code
+    	ListNode node = fakeHead;
+    	while (node.next != null && node.next.val < newNode.val) {
+    		node = node.next;
     	}
     	
-    	prev.next = newNode;
-    	newNode.next = null;
+    	newNode.next = node.next;
+    	node.next = newNode;
     }
     
 	public static void main(String[] args) {
