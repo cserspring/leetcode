@@ -2,21 +2,28 @@ package string;
 
 public class ReverseWordsInAString {
     public String reverseWords(String s) {
-        if (s == null || s.length() == 0) return s;
-        String[] arr = s.trim().split("\\s+");
-        int n = arr.length;
-        for (int i = 0; i < n/2; ++i) {
-        	String tmp = arr[i];
-        	arr[i] = arr[n-1-i];
-        	arr[n-1-i] = tmp;
+    	int n;
+        if (s == null || (n = s.length()) == 0) return s;
+        StringBuilder sb = new StringBuilder("");
+        --n;
+        
+        while (n >= 0) {
+        	int end = n;
+        	while (end >= 0 && Character.isWhitespace(s.charAt(end)))
+        		--end;
+        	int start = end;
+        	while (start >= 0 && !Character.isWhitespace(s.charAt(start)))
+        		--start;
+        	sb.append(s.substring(start+1, end+1) + " ");
+        	n = start;
         }
         
-        return String.join(" ", arr);
+        return sb.toString().trim();
     }
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String s = "the sky is blue";
+		String s = " ";
 		ReverseWordsInAString r = new ReverseWordsInAString();
 		System.out.println(r.reverseWords(s));
 	}
