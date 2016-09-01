@@ -1,26 +1,22 @@
 package array;
 
-import java.util.HashMap;
-
 public class MajorityElement {
     public int majorityElement(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int count = 0;
+        int res = -1;
         int n = nums.length;
         for (int i = 0; i < n; ++i) {
-        	if (map.containsKey(nums[i])) {
-        		map.put(nums[i], map.get(nums[i]) + 1);
+        	if (count == 0) {
+        		res = nums[i];
+        		++count;
+        	} else if (res == nums[i]) {
+        		++count;
         	} else {
-        		map.put(nums[i], 1);
+        		--count;
         	}
         }
         
-        for (Integer key : map.keySet()) {
-        	if (map.get(key) > n / 2) {
-        		return key;
-        	}
-        }
-        
-        return 0;
+        return res;
     }
     
 	public static void main(String[] args) {
