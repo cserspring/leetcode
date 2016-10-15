@@ -1,11 +1,15 @@
 package manipulation;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class HappyNumber {
     public boolean isHappy(int n) {
-        return isHappyHelper(n, 0);        
+    	Set<Integer> set = new HashSet<Integer>();
+        return isHappyHelper(n, set);        
     }
     
-    private boolean isHappyHelper(int n, int loop) {
+    private boolean isHappyHelper(int n, Set<Integer> set) {
     	int res = 0;
         while (n != 0) {
         	int remain = n % 10;
@@ -14,8 +18,9 @@ public class HappyNumber {
         }
         
         if (res == 1) return true;
-        if (loop > 10) return false;
-        return isHappyHelper(res, ++loop);
+        if (set.contains(res)) return false;
+        set.add(res);
+        return isHappyHelper(res, set);
     }
     
 	public static void main(String[] args) {
