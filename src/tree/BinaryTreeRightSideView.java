@@ -1,33 +1,29 @@
 package tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BinaryTreeRightSideView {
-	
+	/* We don't need to use List<List<Integer>> levelTraversalResult to store the level traversal result.
+	 * Just use a HashMap to store the last result.
+	 * */
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
-        List<List<Integer>> levelTraversalResult = new ArrayList<List<Integer>>();
-        levelTraversal(levelTraversalResult, root, 1);
+        Map<Integer, Integer> levelTraversalResult = new HashMap<Integer, Integer>();
+        levelTraversal(levelTraversalResult, root, 0);
         for (int i = 0; i < levelTraversalResult.size(); ++i) {
-        	result.add(levelTraversalResult.get(i).get(levelTraversalResult.get(i).size() - 1));
+        	result.add(levelTraversalResult.get(i));
         }
-        
         return result;
     }
     
-    private void levelTraversal(List<List<Integer>> levelTraversalResult, TreeNode root, int level) {
+    private void levelTraversal(Map<Integer, Integer> levelTraversalResult, TreeNode root, int level) {
     	if (root == null) return;
-    	if (levelTraversalResult.size() < level) {
-    		List<Integer> curLevelResult = new ArrayList<Integer>();
-    		curLevelResult.add(root.val);
-    		levelTraversalResult.add(curLevelResult);
-    	} else {
-    		levelTraversalResult.get(level - 1).add(root.val);
-    	}
-    	
+    	levelTraversalResult.put(level, root.val);
     	levelTraversal(levelTraversalResult, root.left, level + 1);
-    	levelTraversal(levelTraversalResult, root.right, level + 1);    	
+    	levelTraversal(levelTraversalResult, root.right, level + 1);
     }
     
 	public static void main(String[] args) {
