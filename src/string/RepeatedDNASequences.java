@@ -2,8 +2,9 @@ package string;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class RepeatedDNASequences {
 	private final int LEN = 10;
@@ -11,29 +12,42 @@ public class RepeatedDNASequences {
     public List<String> findRepeatedDnaSequences(String s) {
     	List<String> res = new ArrayList<String>();
     	int n;
-    	if (s == null || (n = s.length()) == 0) return res;
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        for (int i = 0; i < n - LEN + 1; ++i) {
-        	String subSeq = s.substring(i, i + 10);
-        	if (map.containsKey(subSeq)) {
-        		map.put(subSeq, map.get(subSeq) + 1);
-        	} else {
-        		map.put(subSeq, 1);
-        	}
+    	if (s == null || (n = s.length()) < 10) return res;
+    	HashMap<Character, Integer> basic = new HashMap<Character, Integer>();
+    	basic.put('A', 0);
+    	basic.put('C', 1);
+    	basic.put('G', 2);
+    	basic.put('T', 3);
+    	
+        Set<Integer> map = new HashSet<Integer>();
+        Set<Integer> existed = new HashSet<Integer>();
+        int src = 0;
+        for (int i = 0; i < LEN; ++i) {
+        	src = (src << 2) + basic.get(s.charAt(i));
         }
         
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-        	if (entry.getValue() > 1) {
-        		res.add(entry.getKey());
+        map.add(src);
+        for (int i = 10; i < n; ++i) {
+        	src = ((src & 0x3FFFF) << 2) + basic.get(s.charAt(i));
+        	if (map.contains(src) && !existed.contains(src)) {
+        		res.add(s.substring(i - 9, i + 1));
+        		existed.add(src);
+        	} else {
+        		map.add(src);
         	}
         }
         
         return res;
-    }
+    }    
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		String s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT";
+		RepeatedDNASequences r = new RepeatedDNASequences();
+		List<String> res = r.findRepeatedDnaSequences(s);
+		for (String i : res) {
+			System.out.println(i);
+		}
 	}
 
 }
