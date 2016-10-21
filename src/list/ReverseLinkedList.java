@@ -2,20 +2,15 @@ package list;
 
 public class ReverseLinkedList {
     public ListNode reverseList(ListNode head) {
-    	ListNode prev = head;
-    	ListNode cur = null;
-    	if (head != null) {
-    		cur = head.next;
-    		prev.next = null;
+    	ListNode prev = null;
+    	while (head != null) {
+    		ListNode next = head.next;
+    		head.next = prev;
+    		prev = head;
+    		head = next;
     	}
-        while (cur != null) {
-        	ListNode next = cur.next;
-        	cur.next = prev;
-        	prev = cur;
-        	cur = next;
-        }
-        
-        return prev;
+    	
+    	return prev;
     }
     
 	public static void main(String[] args) {
