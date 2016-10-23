@@ -2,17 +2,12 @@ package design;
 
 class TrieNode {
     public boolean isEow = false;
-    public char value;
     private int size = 26;
     public TrieNode[] children = new TrieNode[size];
     
     // Initialize your data structure here.
     public TrieNode() {
         
-    }
-    
-    public TrieNode(char value) {
-    	this.value = value;
     }
 }
 
@@ -30,7 +25,7 @@ public class Trie {
         for (int i = 0; i < n; ++i) {
         	char c = word.charAt(i); 
         	if (r.children[c - 'a'] == null)
-        		r.children[c - 'a'] = new TrieNode(c);        	
+        		r.children[c - 'a'] = new TrieNode();        	
         	r = r.children[c - 'a'];        	
         }
         
@@ -43,10 +38,6 @@ public class Trie {
         int i = 0;
         while (i < word.length() && r.children[word.charAt(i) - 'a'] != null) {
         	r = r.children[word.charAt(i) - 'a'];
-        	if (r.value != word.charAt(i)) {
-        		return false;
-        	}
-
         	++i;
         }
         
@@ -59,11 +50,7 @@ public class Trie {
     	TrieNode r = root;
         int i = 0;
         while (i < prefix.length() && r.children[prefix.charAt(i) - 'a'] != null) {
-        	r = r.children[prefix.charAt(i) - 'a'];
-        	if (r.value != prefix.charAt(i)) {
-        		return false;
-        	}
-        	
+        	r = r.children[prefix.charAt(i) - 'a'];       	
         	++i;
         }
         
