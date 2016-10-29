@@ -58,7 +58,7 @@ public class BasicCalculator {
     private boolean hasPriority(char op1, char op2) {
     	if (op2 == '(' || op2 == ')')
     		return false;
-    	if ((op2 == '*' || op2 =='/') && (op1 == '+' || op1 == '-'))
+    	if ((op1 == '*' || op1 =='/') && (op2 == '+' || op2 == '-'))
     		return false;
     	return true;
     }
@@ -67,6 +67,7 @@ public class BasicCalculator {
 		// TODO Auto-generated method stub
 		BasicCalculator b = new BasicCalculator();
 		System.out.println(b.calculate("0"));
+		System.out.println(b.calculate("3+2*2"));
 		System.out.println(b.calculate("(3 + 4 - 1)"));
 		System.out.println(b.calculate("(30 + 4 - 1) / (2 + 1)"));
 	}
