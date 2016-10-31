@@ -18,6 +18,8 @@ public class PalindromeLinkedList {
         while (head != null && secondHead != null) {
         	if (head.val != secondHead.val)
         		return false;
+        	head = head.next;
+        	secondHead = secondHead.next;
         }
         
         return true;
