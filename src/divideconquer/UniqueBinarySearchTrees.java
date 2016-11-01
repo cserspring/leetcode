@@ -1,4 +1,4 @@
-package bst;
+package divideconquer;
 
 public class UniqueBinarySearchTrees {
 
